@@ -19,8 +19,8 @@ export default function RealtimeComposerTitle() {
                     </a>
                 </div>
                 <div >
-                    <span>Docs*</span>
-                    <a href='/plugins/realtime-composer#' > {/* target='_blank' rel='noreferrer'> */}
+                    <span>Docs</span>
+                    <a href='/plugins/realtime-composer/docs' > {/* target='_blank' rel='noreferrer'> */}
 
                         {/* <Icon icon='mdi:link-box-variant' width={'64px'} className='link-icon' /> */}
                         <Icon icon='material-symbols:docs' width={'64px'} className='link-icon' />
