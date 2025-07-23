@@ -1,103 +1,90 @@
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
 import Canvas3D from './components/BackgroundScene/Canvas3D/Canvas3D';
 import Home from './pages/Home';
 import ArchCanvas from './components/BackgroundScene/Canvas3D/ArchCanvas';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import GenericOverlay from './components/primitives/overlays/genericOverlay/GenericOverlay';
-import { Icon } from '@iconify/react';
-import { Link } from 'react-scroll';
+import { useEffect, useState } from 'react';
 import Navbar from './components/primitives/Navbar/Navbar';
+import FractalDistortionPlugin from './components/MainComponents/Programming/plugins/FractalDistortion/FractalDistortion';
+import RealtimeComposerPlugin from './components/MainComponents/Programming/plugins/RealtimeComposer/RealtimeComposer';
+import RealtimeComposerPluginDocs from './components/MainComponents/Programming/plugins/RealtimeComposer/RealtimeComposerDocs';
 
 function App() {
+  const location = useLocation();
+  const [atHome, setAtHome] = useState(location.pathname === '/');
 
-  // Window Size Tracking -----------------------------------------------------------------------
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    setAtHome(location.pathname === '/');
+  }, [location]);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const [windowSize, updateWindowSize] = useState({window_x: window.innerWidth, window_y: window.innerHeight})
-
-  const handleResize = (e : any) => {
-    console.log('RESIZE!', e)
-    updateWindowSize({window_x: e.target.innerWidth, window_y: e.target.innerHeight});
-    if(e.target.innerWidth > 500){
-      setSV_Visible(false);
-    }
-    
-  }
-
-  const {window_x, window_y} = windowSize;
+  const [windowSize, updateWindowSize] = useState({
+    window_x: window.innerWidth,
+    window_y: window.innerHeight
+  });
 
   const [SV_Visible, setSV_Visible] = useState(false);
-  function handleSmallNavigation(){
+  const [visibleSection, setVisibleSection] = useState('');
+
+  useEffect(() => {
+    const handleResize = (e: any) => {
+      updateWindowSize({
+        window_x: e.target.innerWidth,
+        window_y: e.target.innerHeight
+      });
+      if (e.target.innerWidth > 500) {
+        setSV_Visible(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  function handleSmallNavigation() {
     setSV_Visible(!SV_Visible);
   }
 
-  // Scroll Tracking -----------------------------------------------------------------------
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      getVisibleSection(window.scrollY);
     };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const [visibleSection, setVisibleSection] = useState('')
-
-  const handleScroll = (e : any) => {
-    // console.log('Scroll!', e)
-    getVisibleSection(window.scrollY);
-  }
-
-  const getVisibleSection = (scrollPos : number) => {
-    const home = document.getElementById('home');
-    const about = document.getElementById('about');
-    const programming = document.getElementById('programming');
-    const graphics = document.getElementById('3d');
-    const music = document.getElementById('music');
-    const contact = document.getElementById('contact');
-    const sections : any[] = [home, about, programming, graphics, music, contact];
-  
-    for (let i = 0; i < sections.length; i++) {
-      const section = sections[i];
-      const sectionTop = section.offsetTop;
-      const sectionBottom = sectionTop + section.offsetHeight;
-  
-      if (scrollPos + 2 >= sectionTop && scrollPos < sectionBottom) {
-        setVisibleSection(section.id)
-        return sections.find((s) => s.id === section.id);
+  const getVisibleSection = (scrollPos: number) => {
+    const sectionIds = ['home', 'about', 'programming', '3d', 'music', 'contact'];
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const top = el.offsetTop;
+      const bottom = top + el.offsetHeight;
+      if (scrollPos + 2 >= top && scrollPos < bottom) {
+        setVisibleSection(id);
+        return;
       }
     }
-    setVisibleSection('')
-    return null;
+    setVisibleSection('');
   };
-
-  useEffect(()=> {console.log(visibleSection)}, [visibleSection])
-
-  const [navigated, setNavigated] = useState('waiting')
-
-  useEffect(()=>{
-    if (navigated === 'navigated'){
-      setSV_Visible(false)
-    }
-  },[navigated])
 
   return (
     <>
-      <Navbar windowSize={windowSize} SV_Visible={SV_Visible} setSV_Visible={setSV_Visible} handleSmallNavigation={handleSmallNavigation} visibleSection={visibleSection}/>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home visibleSection={visibleSection} windowSize={windowSize}/>}/>
-          <Route path='/test' element={<ArchCanvas hidden={false} building=''/>}/>
-          <Route path='/test0' element={<Canvas3D targetSubScene='' renderStartCallback={(e) => {}}/>}/>
-        </Routes>
-      </BrowserRouter>
-      
+      {atHome && (
+        <Navbar
+          windowSize={windowSize}
+          SV_Visible={SV_Visible}
+          setSV_Visible={setSV_Visible}
+          handleSmallNavigation={handleSmallNavigation}
+          visibleSection={visibleSection}
+        />
+      )}
+      <Routes>
+        <Route path='/' element={<Home visibleSection={visibleSection} windowSize={windowSize} />} />
+        <Route path='/plugins/fractal-distortion' element={<FractalDistortionPlugin />} />
+        <Route path='/plugins/realtime-composer' element={<RealtimeComposerPlugin />} />
+        <Route path='/plugins/realtime-composer/docs' element={<RealtimeComposerPluginDocs />} />
+        {/* <Route path='/test' element={<ArchCanvas hidden={false} building='' />} /> */}
+        {/* <Route path='/test0' element={<Canvas3D targetSubScene='' renderStartCallback={(e) => { }} />} /> */}
+      </Routes>
     </>
   );
 }
