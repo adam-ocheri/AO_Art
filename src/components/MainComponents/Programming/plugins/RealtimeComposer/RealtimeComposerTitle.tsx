@@ -28,7 +28,7 @@ export default function RealtimeComposerTitle() {
                 </div>
                 <div >
                     <span>Get*</span>
-                    <a href='/plugins/realtime-composer#' > {/* target='_blank' rel='noreferrer'> */}
+                    <a href='/plugins/realtime-composer#release-date' > {/* target='_blank' rel='noreferrer'> */}
 
                         {/* <Icon icon='mdi:link-box-variant' width={'64px'} className='link-icon' /> */}
                         <Icon icon='line-md:download-outline-loop' width={'64px'} className='link-icon' />

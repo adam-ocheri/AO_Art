@@ -61,7 +61,7 @@ export default function RealtimeComposerPlugin() {
                                         </div>
                                     </div>
 
-                                    <span className='font-9 p5 mt5 m3'>* Plugin is still under development, and will soon be available on the Unreal Engine Fab Marketplace, including documentation and setup examples</span>
+                                    <span id='release-date' className='font-9 p5 mt5 m3'>* Plugin is set to be released on the Unreal Engine Fab Marketplace on October 1st, 2025, including documentation and setup examples</span>
                                 </div>
 
                             </section>
