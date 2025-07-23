@@ -215,6 +215,13 @@
     font-family: 'Bitter', serif;
 }
 
+.docs-ue-type-name {
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .docs-sidebar {

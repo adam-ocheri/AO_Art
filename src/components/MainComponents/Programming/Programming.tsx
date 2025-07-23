@@ -41,8 +41,8 @@ export default function Programming() {
     switch (name) {
       case 'Strategize': setProjectView({ name, src: 'strategize_logo2_normal.jpg', link: 'https://strategize-fe.vercel.app/', className: 'project-article article-strategize', description: description_Strategize, visible }); break;
       case 'Regime Change': setProjectView({ name, src: 'RegimeChangeBanner.jpg', link: '/scavangers.mp4', className: 'project-article article-regime-change', description: description_RegimeChange, visible }); break;
-      case 'Realtime Composer': setProjectView({ name, src: 'RealtimeComposerBanner.jpg', link: '/scavangers.mp4', className: 'project-article article-realtime-composer', description: description_RealtimeComposer, visible }); break;
-      case 'Fractal Distortion': setProjectView({ name, src: 'FractalDistortionBanner.jpg', link: '/scavangers.mp4', className: 'project-article article-fractal-distortion', description: description_FractalDistortion, visible }); break;
+      case 'Realtime Composer': setProjectView({ name, src: 'RealtimeComposerBanner.jpg', link: '/plugins/realtime-composer', className: 'project-article article-realtime-composer', description: description_RealtimeComposer, visible }); break;
+      case 'Fractal Distortion': setProjectView({ name, src: 'FractalDistortionBanner.jpg', link: '/plugins/fractal-distortion', className: 'project-article article-fractal-distortion', description: description_FractalDistortion, visible }); break;
     }
   }
 
@@ -57,7 +57,7 @@ export default function Programming() {
       <div className='mt6 skill-img-container' style={{ backgroundColor: 'black' }} >
         <img className='skill-img' src='/skill_programming.png' alt='programming' />
       </div>
-      <div className='swa' >
+      <div className='swa'>
         <div className="b-img-0 " >
           <div className={`project-details ${!projectView.visible ? 'details-off' : ''}`} onClick={(e) => { updateProjectViewState(e) }}>
             {projectView.visible &&
@@ -154,7 +154,7 @@ export default function Programming() {
                     <span>
                       <Icon icon='mdi:information-variant-box' width={'64px'} className='link-icon' onClick={() => onProjectViewChange('Realtime Composer', 'stuff..2', true)} />
                     </span>
-                    <a href='/scavangers.mp4' target='_blank' rel='noreferrer'>
+                    <a href='/plugins/realtime-composer'>
                       <Icon icon='mdi:link-box-variant' width={'64px'} className='link-icon' />
                     </a>
                   </span>
@@ -174,7 +174,7 @@ export default function Programming() {
                     <span>
                       <Icon icon='mdi:information-variant-box' width={'64px'} className='link-icon' onClick={() => onProjectViewChange('Fractal Distortion', 'stuff..2', true)} />
                     </span>
-                    <a href='/scavangers.mp4' target='_blank' rel='noreferrer'>
+                    <a href='/plugins/fractal-distortion'>
                       <Icon icon='mdi:link-box-variant' width={'64px'} className='link-icon' />
                     </a>
                   </span>
