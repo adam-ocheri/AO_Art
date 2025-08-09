@@ -147,6 +147,11 @@ const BPFunction: React.FC<BPFunctionProps> = ({ functionData, className = "" })
             <div className="s2 m2 font-1">
                 {functionData.description}
             </div>
+            {functionData.return.type !== "void" && (<div>
+                <div className="s2 m2 font-1">
+                    <span style={{ color: 'rgb(94, 6, 246)' }}>Returns:</span> {functionData.return.description}
+                </div>
+            </div>)}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div className={`bp-function-node ${className}`}>
             {/* Node Header */}

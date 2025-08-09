@@ -612,19 +612,105 @@ export default function RealtimeComposerPluginDocs() {
                     <section id="core-hierarchy-api" className="docs-section">
                         <h3>Core Musical State Hierarchy Management API</h3>
                         <div className="s2 m2 font-1">
-                            
+                            The following API provides the heavily relied-upon functions for creating MusicalStates, SubStates, and AudioTracks - which serve as the core building blocks of the Realtime Composer system.
+                            <br/><br/>
+                            A MusicalState is a core RC object that establishes a musical hierarchy bound by a fixed Tempo and time signature. It provides an AudioChannel that's linked to a MusicCollection, and other 3 SubCollections (AudioCollection, TransientsCollection, SamplesCollection) that all belong under the MusicalState.
+                            <br/><br/>
+                            A MusicCollection is built of `SubStates/EscalationFactors`, which are also simply AudioChannels that go under the main MusicalState channel (use the `MusicEscalate()` function to play `SubStates/EscalationFactors`)
+                            <br/><br/>
+                            A `SubState/EscalationFactor` is an audio channel that contains actual AudioTracks (wave sound sources to be played), each SubState is essentially an AudioChannel to which all tracks under it output their audio to.
                         </div>
 
                         <div style={{ marginBottom: '2rem' }}>
                             <BPFunction functionData={{
-                                name: "{function_name}",
-                                description: "{function_description}",
+                                name: "AddNewMusicalState",
+                                description: "Creates a new MusicalState",
                                 parameters: [
-                                    // { name: "{parameter_name}", type: "{parameter_type}", description: "{parameter_description}" } // if any parameters
+                                    { name: "NewCollectionName", type: "FName", description: "The name for the new MusicalState collection" },
+                                    { name: "TempoSettings", type: "FStateTempoSettings", description: "The Tempo settings to create the music state with" }
                                 ],
                                 return: {
-                                    type: "return_type",
-                                    description: "return_description"
+                                    type: "URCAudioChannelBase*",
+                                    description: "The newly created AudioChannel"
+                                }
+                            }} />
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "AddNewSubstate",
+                                description: "Creates a new SubState/EscalationFactor under a MusicalState",
+                                parameters: [
+                                    { name: "CollectionName", type: "FName", description: "The name of the owning MusicalState collection" },
+                                    { name: "NewSubstateName", type: "FName", description: "The name for the new SubStateEscalationFactor group" }
+                                ],
+                                return: {
+                                    type: "URCAudioChannelBase*",
+                                    description: "The newly created AudioChannel"
+                                }
+                            }} />
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "AddNewTrack",
+                                description: "Creates a new AudioTrack under a `MusicalState->EscalationFactor`. To create a new track, you need to create a new `URCTrackRepresentation` object using `CreateAudioTrack()`, and then pass it to this function.",
+                                parameters: [
+                                    { name: "CollectionName", type: "FName", description: "The name of the owning MusicalState collection" },
+                                    { name: "SubstateName", type: "FName", description: "The name of the owning SubStateEscalationFactor group" },
+                                    { name: "Track", type: "URCTrackRepresentation*", description: "The representation object for the Track" }
+                                ],
+                                return: {
+                                    type: "URCAudioTrackBase*",
+                                    description: "The newly created AudioTrack"
+                                }
+                            }} />
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "RemoveMusicalState",
+                                description: "Fully removes a MusicalState from audio hierarchy",
+                                parameters: [
+                                    { name: "CollectionName", type: "FName", description: "The name of the MusicalState collection to remove" },
+                                    { name: "RemovalBehavior", type: "ERCTrackRemovalBehavior", description: "The type of audio stop behavior to use (only applies if the state is currently actively playing)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "RemoveSubstate",
+                                description: "Fully removes a SubState from a state's audio hierarchy",
+                                parameters: [
+                                    { name: "CollectionName", type: "FName", description: "The name of the MusicalState collection to remove" },
+                                    { name: "SubstateName", type: "FName", description: "The name of the EscalationFactor group collection to remove" },
+                                    { name: "RemovalBehavior", type: "ERCTrackRemovalBehavior", description: "The type of audio stop behavior to use (only applies if the sub-state is currently actively playing)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "RemoveTrack",
+                                description: "Fully removes a Track from a sub-state's audio hierarchy",
+                                parameters: [
+                                    { name: "CollectionName", type: "FName", description: "The name of the MusicalState collection to remove" },
+                                    { name: "SubstateName", type: "FName", description: "The name of the EscalationFactor group collection to remove" },
+                                    { name: "TrackName", type: "FName", description: "The name of track to remove" },
+                                    { name: "RemovalBehavior", type: "ERCTrackRemovalBehavior", description: "The type of audio stop behavior to use (only applies if the track is currently actively playing)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
                                 }
                             }} />
                         </div>
