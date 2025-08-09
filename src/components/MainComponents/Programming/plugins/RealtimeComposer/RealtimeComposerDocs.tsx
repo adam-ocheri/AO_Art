@@ -1,6 +1,7 @@
 
 import { Icon } from '@iconify/react'
 import { useState, useEffect, useRef } from 'react'
+import { BPFunction } from './DocsDataComponents/BPFunction'
 
 export default function RealtimeComposerPluginDocs() {
     const [activeCategory, setActiveCategory] = useState('getting-started')
@@ -44,6 +45,21 @@ export default function RealtimeComposerPluginDocs() {
                 'console-features': 'Console Features',
                 'manual-control': 'Manual Control',
                 'performance-monitoring': 'Performance Monitoring'
+            }
+        },
+        'api-reference': {
+            title: 'API Reference',
+            description: 'Explore the comprehensive API reference for the Realtime Composer plugin, providing detailed information on all classes, functions, and properties.',
+            subcategories: {
+                // 'api-reference': 'API Reference',
+                'core-control-api': 'Core RealtimeComposer Control API',
+                'core-hierarchy-api': 'Core Musical State Hierarchy Management API',
+                'subcollections-api': 'SubCollections API',
+                'game-audio-api': 'Game Audio API',
+                'sound-effects-api': 'Sound Effects API',
+                'sends-api': 'Sends API',
+                'soloing-functionality': 'Soloing Functionality',
+                'rc-runtime-data-getters': 'RC Runtime Data Getters'
             }
         }
     }
@@ -228,6 +244,390 @@ export default function RealtimeComposerPluginDocs() {
                         <p>
                             Performance metrics help you identify potential bottlenecks and optimize your musical system for better performance across different platforms and hardware configurations.
                         </p>
+                    </section>
+                </>
+            )
+        },
+        'api-reference': {
+            content: (
+                <>
+                    {/* <section id="api-reference" className="docs-section">
+                        <h3>API Reference</h3>
+                        <p>
+                            The Realtime Composer plugin provides a comprehensive set of Blueprint Callable functions that can be used to control and manage the music system. Below are the key functions available in the plugin.
+                        </p>
+                        
+                        <h4>Core Functions</h4>
+                        <p>
+                            These are the main functions used to create and manage the music system:
+                        </p>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "CreateMusicState",
+                                description: "Creates a new music state with the specified name and tempo",
+                                parameters: [
+                                    { name: "StateName", type: "FName", description: "Name of the music state to create" },
+                                    { name: "Tempo", type: "float", description: "Tempo in BPM for this music state" },
+                                    { name: "TimeSignature", type: "int32", description: "Time signature (e.g., 4 for 4/4 time)" }
+                                ],
+                                return: {
+                                    type: "URC_MusicState*",
+                                    description: "Reference to the created music state"
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "CreateSubState",
+                                description: "Creates a new sub-state within a music state",
+                                parameters: [
+                                    { name: "ParentState", type: "URC_MusicState*", description: "Parent music state" },
+                                    { name: "SubStateName", type: "FName", description: "Name of the sub-state" },
+                                    { name: "EscalationFactor", type: "int32", description: "Escalation factor for this sub-state" }
+                                ],
+                                return: {
+                                    type: "URC_SubState*",
+                                    description: "Reference to the created sub-state"
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "AddAudioTrack",
+                                description: "Adds an audio track to a sub-state",
+                                parameters: [
+                                    { name: "SubState", type: "URC_SubState*", description: "Target sub-state" },
+                                    { name: "AudioAsset", type: "USoundWave*", description: "Audio asset to add" },
+                                    { name: "Volume", type: "float", description: "Initial volume (0.0 to 1.0)" }
+                                ],
+                                return: {
+                                    type: "URC_AudioTrack*",
+                                    description: "Reference to the created audio track"
+                                }
+                            }} />
+                        </div>
+                        
+                        <h4>Control Functions</h4>
+                        <p>
+                            Functions for controlling the music system playback and state transitions:
+                        </p>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "StartMusicSystem",
+                                description: "Starts the music system with a 4-beat precount",
+                                parameters: [
+                                    { name: "InitialState", type: "URC_MusicState*", description: "Initial music state to start with" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "EscalateSubState",
+                                description: "Escalates a sub-state by the specified factor",
+                                parameters: [
+                                    { name: "SubState", type: "URC_SubState*", description: "Sub-state to escalate" },
+                                    { name: "Factor", type: "int32", description: "Escalation factor" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "DeescalateSubState",
+                                description: "Deescalates a sub-state by the specified factor",
+                                parameters: [
+                                    { name: "SubState", type: "URC_SubState*", description: "Sub-state to deescalate" },
+                                    { name: "Factor", type: "int32", description: "Deescalation factor" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "StopMusicSystem",
+                                description: "Stops the music system (stops metronome but allows tracks to finish naturally)",
+                                parameters: [],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                    </section> */}
+
+                    <section id="core-control-api" className="docs-section">
+                        <h3>Core RealtimeComposer Control API</h3>
+                        <div className="s2 m2 font-1">
+                            This is the core API for control playing of the music system, audio tracks, music-collections and sub-collections, as well as state switching.
+                            <br/>
+                            These are the most high level functions that define the most essential behavior functionality control.
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "PlayMusicSystem",
+                                description: "Start play the music system",
+                                parameters: [
+                                    { name: "bPlayWithMetronome", type: "bool", description: "Should the metronome be playing as well" },
+                                    { name: "PrecountBounds", type: "ERCPrecountBounds", description: "How much musical time to play before actually hitting Bar 1 Beat 1 (ignored if resuming after pause). Can choose None to opt-out." }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "PauseMusicSystem",
+                                description: "Pause the music system. To resume playing, call PlayMusicSystem again",
+                                parameters: [],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "StopMusicSystem",
+                                description: "Stop play of the music system",
+                                parameters: [
+                                    { name: "StopBehavior", type: "ERCTrackRemovalBehavior", description: "How should the playing music be stopped" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "MusicEscalate",
+                                description: "Escalate the currently playing MusicalState. If a MusicalState has X number of groups under it (referred to as EscalationFactors or SubStates), then each factor escalated will start playing the tracks under it",
+                                parameters: [
+                                    { name: "PlayOnNextQuantization", type: "EQuartzCommandQuantization", description: "The next musical time when the escalation should start" },
+                                    { name: "Factor", type: "int32", description: "The degree of escalation. NOTE1: MusicalState should have sufficient sub-states for the request (truncated otherwise). NOTE2: Factor value can not be lower than 1" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "MusicDeescalate",
+                                description: "De-escalate a currently playing MusicalState.",
+                                parameters: [
+                                    { name: "TrackDeescalationBehavior", type: "ERCTrackRemovalBehavior", description: "The behavior or timing of how should the associated audio tracks should stop playing" },
+                                    { name: "Factor", type: "int32", description: "The degree of deescalation. NOTE1: MusicalState should have sufficient sub-states for the request (truncated otherwise). NOTE2: Factor value can not be lower than 1" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SwitchMusicalState",
+                                description: "Switch to a new musical state",
+                                parameters: [
+                                    { name: "NewStateName", type: "FName", description: "The name of the MusicalState to activate" },
+                                    { name: "SwitchQuantization", type: "EQuartzCommandQuantization", description: "The quantization type for the switch" },
+                                    { name: "bAutoEscalate", type: "bool", description: "Should automatically escalate and play upon switch" },
+                                    { name: "Factor", type: "int32", description: "The degree of escalation to use (used only if passing bAutoEscalate = true)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "PlayRCTrack",
+                                description: "Standardized function that can play any (already Loaded) AudioTrack (except for MusicCollection tracks which only respond to MusicEscalate())",
+                                parameters: [
+                                    { name: "Track", type: "URCAudioTrackBase*", description: "The track to play" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "StopRCTrack",
+                                description: "Standardized function that can stop any playing AudioTrack (except for MusicCollection tracks which only respond to MusicDeescalate())",
+                                parameters: [
+                                    { name: "Track", type: "URCAudioTrackBase*", description: "The track to stop" },
+                                    { name: "StopBehavior", type: "ERCTrackRemovalBehavior", description: "How should the playing track be stopped" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SetAudioChannelVolume",
+                                description: "Set the audio track's volume, normalized",
+                                parameters: [
+                                    { name: "Channel", type: "URCAudioChannelBase*", description: "The audio channel to update" },
+                                    { name: "InVolume", type: "float", description: "The new gain value from 0.0 to 1.0" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SetAudioTrackVolume",
+                                description: "Sets the volume level for the specified audio track.",
+                                parameters: [
+                                    { name: "Track", type: "URCAudioTrackBase*", description: "A pointer to the audio track whose volume will be set." },
+                                    { name: "InVolume", type: "float", description: "The new volume level to apply to the audio track." }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "ModulateAudioChannelVolume",
+                                description: "Modulates the volume of a specified audio channel over a given duration.",
+                                parameters: [
+                                    { name: "Channel", type: "URCAudioChannelBase*", description: "Pointer to the audio channel whose volume will be modulated." },
+                                    { name: "TargetVolume", type: "float", description: "The target volume to reach, in the range [0.0, 1.0]." },
+                                    { name: "LerpDuration", type: "float", description: "The duration, in seconds, over which to interpolate the volume change." }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "ModulateAudioTrackVolume",
+                                description: "Modulates the volume of an audio track over a specified duration.",
+                                parameters: [
+                                    { name: "Track", type: "URCAudioTrackBase*", description: "Pointer to the audio track whose volume will be modulated." },
+                                    { name: "TargetVolume", type: "float", description: "The target volume to reach, in the range [0.0, 1.0]." },
+                                    { name: "LerpDuration", type: "float", description: "The duration, in seconds, over which to interpolate the volume change." }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SetSubcollectionGroupPlayActive",
+                                description: "Function used for start playing all tracks under a sub-collection group",
+                                parameters: [
+                                    { name: "MusicState", type: "UMusicStateCollections*", description: "The owning music state" },
+                                    { name: "GroupName", type: "FName", description: "The group name" },
+                                    { name: "SubContext", type: "EAudioTrackGroupContext", description: "Sub Collection context (MusicTracks SubCol ops are forbidden and ignored)" },
+                                    { name: "Q", type: "EQuartzCommandQuantization", description: "The Quantization type to play group (use EQuartzCommandQuantization::None to use Track Default set quantization on track creation)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SetSubcollectionGroupPlayDisabled",
+                                description: "Function used for stopping all tracks under a sub-collection group",
+                                parameters: [
+                                    { name: "MusicState", type: "UMusicStateCollections*", description: "The owning music state" },
+                                    { name: "GroupName", type: "FName", description: "The group name" },
+                                    { name: "SubContext", type: "EAudioTrackGroupContext", description: "Sub Collection context (MusicTracks SubCol ops are forbidden and ignored)" },
+                                    { name: "RemovalBehavior", type: "ERCTrackRemovalBehavior", description: "The stop behavior (dequeue, next bar, next beat)" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "SetMetronomeActive",
+                                description: "Set music system clock to play with metronome or not",
+                                parameters: [
+                                    { name: "bActive", type: "bool", description: "If true, metronome will play while music clock ticks" }
+                                ],
+                                return: {
+                                    type: "void",
+                                    description: ""
+                                }
+                            }} />
+                        </div>
+                        
+                    </section>
+
+                    <section id="core-hierarchy-api" className="docs-section">
+                        <h3>Core Musical State Hierarchy Management API</h3>
+                        <div className="s2 m2 font-1">
+                            
+                        </div>
+
+                        <div style={{ marginBottom: '2rem' }}>
+                            <BPFunction functionData={{
+                                name: "{function_name}",
+                                description: "{function_description}",
+                                parameters: [
+                                    // { name: "{parameter_name}", type: "{parameter_type}", description: "{parameter_description}" } // if any parameters
+                                ],
+                                return: {
+                                    type: "return_type",
+                                    description: "return_description"
+                                }
+                            }} />
+                        </div>
                     </section>
                 </>
             )

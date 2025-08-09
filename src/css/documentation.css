@@ -98,11 +98,9 @@
     text-decoration: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    font-size: 0.9rem;
+    font-family: 'Bitter', serif;
     font-weight: 600;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.05);
-    font-family: 'Bitter', serif;
 }
 
 .docs-nav-category-header:hover {
@@ -113,7 +111,6 @@
 .docs-nav-category-header.active {
     background: rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 1);
-    border-left: 3px solid rgba(255, 255, 255, 0.8);
 }
 
 .docs-nav-category-header .expand-icon {
@@ -129,10 +126,11 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .docs-nav-subcategories.expanded {
-    max-height: 500px; /* Adjust based on content */
+    max-height: 500px;
 }
 
 .docs-section {
@@ -222,6 +220,226 @@
     border-radius: 0.2rem;
 }
 
+/* Blueprint Function Node Styles */
+.bp-function-node {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    border: 2px solid #4a4a4a;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    min-width: 300px;
+    max-width: 500px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    position: relative;
+    overflow: hidden;
+}
+
+.bp-function-node::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00a8ff, #0097e6, #00a8ff);
+    border-radius: 6px 6px 0 0;
+}
+
+.bp-node-header {
+    background: linear-gradient(135deg, #00173e 0%, #002267 100%);
+    padding: 12px 16px;
+    border-bottom: 1px solid #4a4a4a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.bp-node-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bp-function-icon {
+    font-size: 18px;
+    color: #0066cc;
+    font-style: italic;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.bp-function-name {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.bp-node-category {
+    background: rgba(0, 168, 255, 0.2);
+    color: #00a8ff;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 168, 255, 0.3);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bp-node-body {
+    padding: 16px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+}
+
+.bp-pins-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.bp-input-pins,
+.bp-output-pins {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.bp-pin {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.bp-pin:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bp-input-pin {
+    flex-direction: row;
+}
+
+.bp-output-pin {
+    flex-direction: row;
+    justify-content: flex-end;
+    text-align: right;
+    gap: 8px;
+}
+
+.bp-pin-connector {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #666;
+    background: #333;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.bp-input-connector {
+    background: linear-gradient(135deg, #4a4a4a, #333);
+    border-color: #666;
+}
+
+.bp-output-connector {
+    background: linear-gradient(135deg, #4a4a4a, #333);
+    border-color: #666;
+}
+
+.bp-pin-connector::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #999;
+}
+
+.bp-pin-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.bp-pin-name {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.bp-pin-type {
+    font-size: 10px;
+    font-weight: 600;
+    text-shadow: 0 0 4px currentColor;
+    opacity: 0.9;
+}
+
+/* Type-specific connector colors */
+.bp-pin[data-type="float"] .bp-pin-connector {
+    border-color: rgb(60, 255, 0);
+    background: linear-gradient(135deg, rgba(60, 255, 0, 0.3), rgba(60, 255, 0, 0.1));
+}
+
+.bp-pin[data-type="int32"] .bp-pin-connector {
+    border-color: rgb(0, 234, 255);
+    background: linear-gradient(135deg, rgba(0, 234, 255, 0.3), rgba(0, 234, 255, 0.1));
+}
+
+.bp-pin[data-type="bool"] .bp-pin-connector {
+    border-color: rgb(213, 0, 0);
+    background: linear-gradient(135deg, rgba(213, 0, 0, 0.3), rgba(213, 0, 0, 0.1));
+}
+
+.bp-pin[data-type="FString"] .bp-pin-connector {
+    border-color: rgb(226, 5, 255);
+    background: linear-gradient(135deg, rgba(226, 5, 255, 0.3), rgba(226, 5, 255, 0.1));
+}
+
+.bp-pin[data-type="FName"] .bp-pin-connector {
+    border-color: rgb(255, 0, 153);
+    background: linear-gradient(135deg, rgba(255, 0, 153, 0.3), rgba(255, 0, 153, 0.1));
+}
+
+.bp-pin[data-type="FVector"] .bp-pin-connector {
+    border-color: rgb(255, 208, 0);
+    background: linear-gradient(135deg, rgba(255, 208, 0, 0.3), rgba(255, 208, 0, 0.1));
+}
+
+.bp-pin[data-type="enum"] .bp-pin-connector,
+.bp-pin[data-type="enum"] .bp-input-connector,
+.bp-pin[data-type="enum"] .bp-output-connector {
+    border-color: rgb(0, 39, 16) !important;
+    background: linear-gradient(135deg, rgba(0, 39, 16, 0.3), rgba(0, 39, 16, 0.1)) !important;
+}
+
+/* Enum types - any type that starts with E (Unreal Engine enum convention) */
+.bp-pin[data-type^="E"] .bp-pin-connector,
+.bp-pin[data-type^="E"] .bp-input-connector,
+.bp-pin[data-type^="E"] .bp-output-connector {
+    border-color: rgb(0, 39, 16) !important;
+    background: linear-gradient(135deg, rgba(0, 39, 16, 0.3), rgba(0, 39, 16, 0.1)) !important;
+}
+
+/* UObject types - any type that starts with U */
+.bp-pin[data-type^="U"] .bp-pin-connector {
+    border-color: rgb(0, 128, 255);
+    background: linear-gradient(135deg, rgba(0, 128, 255, 0.3), rgba(0, 128, 255, 0.1));
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .docs-sidebar {
@@ -241,5 +459,32 @@
         top: auto;
         left: auto;
         margin-bottom: 1rem;
+    }
+    
+    .bp-function-node {
+        min-width: 250px;
+        max-width: 100%;
+    }
+    
+    .bp-pins-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .bp-input-pins,
+    .bp-output-pins {
+        flex: none;
+    }
+    
+    .bp-function-name {
+        font-size: 12px;
+    }
+    
+    .bp-pin-name {
+        font-size: 11px;
+    }
+    
+    .bp-pin-type {
+        font-size: 9px;
     }
 } 
