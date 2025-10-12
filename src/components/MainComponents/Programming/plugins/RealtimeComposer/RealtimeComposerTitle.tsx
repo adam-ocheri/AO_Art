@@ -27,8 +27,8 @@ export default function RealtimeComposerTitle() {
                     </a>
                 </div>
                 <div >
-                    <span>Get*</span>
-                    <a href='/plugins/realtime-composer#release-date' > {/* target='_blank' rel='noreferrer'> */}
+                    <span>Get</span>
+                    <a href='https://www.fab.com/listings/7a8604cd-9560-4114-a712-6ac3bb5ad375' > {/* target='_blank' rel='noreferrer'> */}
 
                         {/* <Icon icon='mdi:link-box-variant' width={'64px'} className='link-icon' /> */}
                         <Icon icon='line-md:download-outline-loop' width={'64px'} className='link-icon' />

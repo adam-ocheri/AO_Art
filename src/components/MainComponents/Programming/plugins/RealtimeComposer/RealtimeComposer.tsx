@@ -38,7 +38,11 @@ export default function RealtimeComposerPlugin() {
                                         <br />
                                     </div>
                                     <div className='font-1 p5 m5'>
-                                        <img alt='realtime composer plugin preview' src={'../../RC1_L.jpg'} width={'85%'} />
+                                        <div className='flex f-wrap j-even'>
+
+                                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-midi-track-editor.png'} style={{flex: '1 1 300px', maxWidth: '100%'}} />
+                                            <img alt='realtime composer plugin preview' src={'../../RC1_L.jpg'} style={{flex: '1 1 300px', maxWidth: '100%'}} />
+                                        </div>
                                     </div>
                                     <div className='font-1 s2 ' style={{ textAlign: 'left' }}>
                                         <br />
@@ -48,10 +52,63 @@ export default function RealtimeComposerPlugin() {
                                         <ul>
                                             <li>Music Orchestration</li>
                                             <li>Music Composition</li>
-                                            <li>Sound Mixing</li>
+                                            <li>Audio Mixing</li>
                                             <li>Sound Processing</li>
                                         </ul>
                                         <br />
+                                    </div>
+                                    <div className='font-1 s2 ' style={{ textAlign: 'left' }}>
+                                        <h2>Development Roadmap</h2>
+                                        <div className='font-1 s2 ' style={{ textAlign: 'left', margin: '20px' }}>
+                                            <h4>Version 0.8.0 <span className='font-9 s1' style={{ marginLeft: '10px', color: 'rgba(34, 34, 34, 1.0)', backgroundColor: 'rgba(0, 255, 0, 0.97)', padding: '2px 4px', borderRadius: '8px' }}> UPCOMING VERSION</span></h4> 
+                                            <ul>
+                                                <li>MIDI tracks shifting 
+                                                    <div>
+                                                        Time shifting MIDI tracks when they are shorter than the base loop
+                                                        <br />
+                                                        For example, in a loop of 8 Bars, if a track length is 4 Bars, then it can "shift" and play 2 times; once starting at the beginning of the loop, and once starting at the 4th Bar
+                                                    </div>
+                                                </li>
+                                                <li>Drum Track Editor 
+                                                    <div>
+                                                        Similar to the existing MIDI track editor, but for drum tracks - enabling users to create beats and drum patterns directly in the engine
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className='font-1 s2 ' style={{ textAlign: 'left', margin: '20px' }}>
+                                            <h4>Version 0.9.0</h4>
+                                            <ul>
+                                                <li>PhysicalSynthComponent
+                                                    <div>
+                                                        a component that allows for the tracking of velocity of Actors or Skeletal Mesh joints, used for driving a synthsized sound generated realtime by the velocity value and preset audio parameters
+                                                    </div>
+                                                </li>
+                                                <li>MusicalState Asset editor 
+                                                    <div>
+                                                        a new asset editor for easily creating and managing MusicalStates
+                                                    </div>
+                                                </li>
+                                                <li>SubCollection Asset editor 
+                                                    <div>
+                                                        a new asset editor for easily creating and managing SubCollections
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className='font-1 s2 ' style={{ textAlign: 'left', margin: '20px' }}>
+                                            <h4>Version 1.0.0</h4>
+                                            <ul>
+                                                <li>
+                                                    MCP Server Integration 
+                                                    <div>
+                                                        a self sustained containerized server that allows for the music creation of MIDI+Drum tracks. 
+                                                        <br />
+                                                        Users with Nvidia GPUs will be able to uttilize Docker technology to locally host the MCP model with seamless integration, for free
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
 
                                     <div className='p5 m5 font-9 s3 j-even'>
@@ -61,7 +118,6 @@ export default function RealtimeComposerPlugin() {
                                         </div>
                                     </div>
 
-                                    <span id='release-date' className='font-9 p5 mt5 m3'>* Plugin is set to be released on the Unreal Engine Fab Marketplace on October 1st, 2025, including documentation and setup examples</span>
                                 </div>
 
                             </section>

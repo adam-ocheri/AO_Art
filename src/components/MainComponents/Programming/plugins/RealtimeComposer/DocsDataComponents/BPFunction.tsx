@@ -147,6 +147,7 @@ const BPFunction: React.FC<BPFunctionProps> = ({ functionData, className = "" })
             <div className="s2 m2 font-1">
                 {functionData.description}
             </div>
+            
             {functionData.return.type !== "void" && (<div>
                 <div className="s2 m2 font-1">
                     <span style={{ color: 'rgb(94, 6, 246)' }}>Returns:</span> {functionData.return.description}
@@ -202,8 +203,21 @@ const BPFunction: React.FC<BPFunctionProps> = ({ functionData, className = "" })
                         </div>
                     )}
                 </div>
+                
             </div>
         </div>
+            {functionData.parameters.length > 0 && (<
+            div>
+                {functionData.parameters.map((param, index) => (
+                    <div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
+                        <span style={{ color: 'rgb(94, 6, 246)', fontSize: '0.7rem' }}>{param.type}</span>
+                        <span style={{ color: 'grey', fontSize: '0.7rem' }}> {param.name}</span>
+                        {/* {index < functionData.parameters.length - 1 && <span style={{ color: 'white' }}>, </span>} */}
+                        <span style={{ color: 'white', fontSize: '0.9rem' }}> {param.description}</span>
+                    </div>
+                ))}
+
+            </div>)}
             </div>
         </div>
     );
