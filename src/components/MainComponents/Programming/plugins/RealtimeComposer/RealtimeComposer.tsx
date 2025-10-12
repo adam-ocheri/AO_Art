@@ -40,8 +40,8 @@ export default function RealtimeComposerPlugin() {
                                     <div className='font-1 p5 m5'>
                                         <div className='flex f-wrap j-even'>
 
-                                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-midi-track-editor.png'} style={{flex: '1 1 300px', maxWidth: '100%'}} />
-                                            <img alt='realtime composer plugin preview' src={'../../RC1_L.jpg'} style={{flex: '1 1 300px', maxWidth: '100%'}} />
+                                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-midi-track-editor.png'} style={{flex: '1 1 300px', maxWidth: '60%'}} />
+                                            <img alt='realtime composer plugin preview' src={'../../RC1_L.jpg'} style={{flex: '1 1 300px', maxWidth: '60%'}} />
                                         </div>
                                     </div>
                                     <div className='font-1 s2 ' style={{ textAlign: 'left' }}>
