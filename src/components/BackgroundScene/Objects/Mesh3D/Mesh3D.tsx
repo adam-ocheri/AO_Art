@@ -48,9 +48,9 @@ export default function  Mesh3D  ({ url, position = [0, 0, 0], rotation = [0,0,0
       if(animated) mixer.update(delta);
     });
   
-    const fired = (e : any) => {
-      console.log(e);
-    }
+    // const fired = (e : any) => {
+    //   console.log(e);
+    // }
 
     //JSX
     return (
