@@ -1,13 +1,10 @@
 import * as THREE from 'three'
 import React, { useEffect, useRef, useState } from 'react'
-import { Stats, OrbitControls, Environment, useGLTF, useBounds, Bounds } from '@react-three/drei'
+import { Environment } from '@react-three/drei'
 
-import { Canvas, useFrame, ThreeElements, useThree, useLoader, events, createEvents } from '@react-three/fiber'
+import { Canvas, useFrame, ThreeElements, useThree, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import LandingCanvas from './LandingCanvas'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import DMesh from '../Objects/DracoMesh/DMesh'
-import Cello_t from '../Objects/Cello_t'
 
 // document.addEventListener('requestAnimationFrame', (e) => {
 //   console.log('My Event listener Fired!');
@@ -206,16 +203,14 @@ const Model3D = ({ url, position = [0, 0, 0], rotation = [0,0,0], scale = [1, 1,
 //https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@environment/public/img/venice_sunset_1k.hdr
 //HDR_Free_City_Night_Lights_Ref.hdr
 //carpentry_shop_02_1k.hdr
-export default function Canvas3D({targetSubScene, renderStartCallback} : {targetSubScene : string, renderStartCallback : (e : any) => void}) {
+export default function Canvas3D({targetSubScene, renderStartCallback} : {targetSubScene : string, renderStartCallback?: (e : any) => void}) {
 
   // const three = useThree();
   const canvasRef : any = useRef();
-  const [loaded, setLoaded] = useState(false);
-
   // Custom Loading Management-----Override DefaultLoadingManager---------------------------------------------------------------------------------------
   const loadManager : THREE.LoadingManager = THREE.DefaultLoadingManager;
   loadManager.onLoad = () => {
-    setLoaded(true);
+    renderStartCallback?.(loadManager);
   };
   loadManager.onProgress = ((url : any)=> {
     // console.log('Currently loading........', url)
@@ -231,7 +226,6 @@ export default function Canvas3D({targetSubScene, renderStartCallback} : {target
 
   return (
     <>
-    {/* {!loaded && <LandingCanvas targetSubScene='' />} */}
     {<Canvas ref={canvasRef} hidden={false} style={{ width: '100%', height: '100%', position: 'absolute', zIndex: -1, minHeight: '95vh'}}>
       <Environment 
         files="./HDR_Free_City_Night_Lights_Ref.hdr" 

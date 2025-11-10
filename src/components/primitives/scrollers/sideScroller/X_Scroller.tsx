@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export default function X_Scroller({ onImageViewChange, imageView, imgFormat }: any) {
+export default function XScroller({ onImageViewChange, imageView, imgFormat }: any) {
 
   // const images : string [] = [
   //     'hs-imgs/e1-normal.jpg', 'hs-imgs/e2-normal.jpg',

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import X_Scroller from '../../primitives/scrollers/sideScroller/X_Scroller'
+import React, { useCallback, useEffect, useState } from 'react'
+import XScroller from '../../primitives/scrollers/sideScroller/X_Scroller'
 import { Icon } from '@iconify/react'
 import GenericCanvas from '../../BackgroundScene/Canvas3D/GenericCanvas'
 import ArchCanvas from '../../BackgroundScene/Canvas3D/ArchCanvas'
@@ -20,29 +20,7 @@ export default function Art3D({ windowSize }: { windowSize: { window_x: number, 
     setImageView({ id, active, src });
   }
 
-  useEffect(() => {
-    adjustToWindowSize();
-  }, [windowSize])
-
-  useEffect(() => {
-    if (imageView.active) {
-      setImageView((prev) => ({
-        ...prev,
-        src: `hs-imgs/e${imageView.id + 1}-${imgFMT}.jpg`
-      }));
-    }
-  }, [imgFMT])
-
-
-
-  const updateImageView = (e: any) => {
-    console.log(e)
-    if (e.target.nodeName !== 'ARTICLE' && e.target.nodeName !== 'IMG' && e.target.nodeName !== 'path' && e.target.nodeName !== 'svg') {
-      setImageView({ id: -1, active: false, src: '' });
-    }
-  }
-
-  const adjustToWindowSize = () => {
+  const adjustToWindowSize = useCallback(() => {
     let imgFormat = ''
 
     if (windowSize.window_x >= 1920) {
@@ -62,6 +40,28 @@ export default function Art3D({ windowSize }: { windowSize: { window_x: number, 
     }
     setImgFMT(imgFormat);
     return imgFormat;
+  }, [windowSize.window_x, windowSize.window_y]);
+
+  useEffect(() => {
+    adjustToWindowSize();
+  }, [adjustToWindowSize])
+
+  useEffect(() => {
+    if (imageView.active) {
+      setImageView((prev) => ({
+        ...prev,
+        src: `hs-imgs/e${prev.id + 1}-${imgFMT}.jpg`
+      }));
+    }
+  }, [imgFMT, imageView.active, imageView.id])
+
+
+
+  const updateImageView = (e: any) => {
+    console.log(e)
+    if (e.target.nodeName !== 'ARTICLE' && e.target.nodeName !== 'IMG' && e.target.nodeName !== 'path' && e.target.nodeName !== 'svg') {
+      setImageView({ id: -1, active: false, src: '' });
+    }
   }
 
   const navigateImageGallery = (direction: number) => {
@@ -71,11 +71,14 @@ export default function Art3D({ windowSize }: { windowSize: { window_x: number, 
       let imgFMT = adjustToWindowSize();
 
       console.log(imgFMT)
-      setImageView((prev) => ({
-        active: true,
-        id: imageView.id + direction,
-        src: `hs-imgs/e${imageView.id + direction + 1}-${imgFMT}.jpg`
-      }));
+      setImageView((prev) => {
+        const newId = prev.id + direction;
+        return {
+          active: true,
+          id: newId,
+          src: `hs-imgs/e${newId + 1}-${imgFMT}.jpg`
+        };
+      });
     }
   }
 
@@ -166,7 +169,7 @@ export default function Art3D({ windowSize }: { windowSize: { window_x: number, 
                 {/* <GenericCanvas/> */}
               </div>
             </article>
-            <X_Scroller onImageViewChange={onImageViewChange} imageView={imageView} imgFormat={imgFMT} />
+            <XScroller onImageViewChange={onImageViewChange} imageView={imageView} imgFormat={imgFMT} />
             {/* <a href="/#"> Portfolio </a> */}
           </div>
           <p className="font-6 p2 s1 area-text-skills flex f-wrap j-even">

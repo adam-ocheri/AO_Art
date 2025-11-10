@@ -4,7 +4,6 @@ import useSound from "use-sound";
 import { AiFillPlayCircle, AiFillPauseCircle } from "react-icons/ai";
 import { BiSkipNext, BiSkipPrevious } from "react-icons/bi";
 import { IconContext } from "react-icons";
-import { HookOptions } from "use-sound/dist/types";
 
 export default function MusicPlayer() {
     //-------------------------------------------------------
@@ -44,7 +43,7 @@ export default function MusicPlayer() {
         sec: secRemain
       });
     }
-  }, [isPlaying]);
+  }, [duration]);
 
   useEffect(() => {
     const interval = setInterval(() => {

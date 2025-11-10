@@ -5,7 +5,7 @@ import GenericOverlay from '../overlays/genericOverlay/GenericOverlay'
 
 export default function Navbar({windowSize, SV_Visible, setSV_Visible, handleSmallNavigation, visibleSection} : {windowSize: {window_x:number, window_y:number}, SV_Visible: boolean, setSV_Visible: any, handleSmallNavigation: any, visibleSection: string}) {
   
-    const {window_x, window_y} = windowSize;
+    const {window_x} = windowSize;
 
     return (
     <>

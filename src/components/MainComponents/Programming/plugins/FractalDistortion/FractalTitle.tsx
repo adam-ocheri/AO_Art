@@ -1,6 +1,5 @@
 import { Icon } from '@iconify/react'
 import React from 'react'
-import { Link } from 'react-scroll'
 
 export default function FractalTitle() {
     return (

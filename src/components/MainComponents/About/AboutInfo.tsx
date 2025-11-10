@@ -46,13 +46,6 @@ export default function AboutInfo() {
     }
   }
 
-  const scrollOptions = {
-  duration: 500,
-  delay: 100,
-  smooth: true,
-  offset: 50
-  }
-  
   return (
     <section className='mt5 mb5 pb5' id='about' style={{paddingTop: '15%', marginBottom: '25%'}}>
       <div>
