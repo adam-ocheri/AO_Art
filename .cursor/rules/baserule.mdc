@@ -1,5 +1,5 @@
 ---
-alwaysApply: true
+alwaysApply: false
 ---
 
 Always check @COREREADME.md to remember the purpose of the project.
