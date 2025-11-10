@@ -1,8 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import Canvas3D from './components/BackgroundScene/Canvas3D/Canvas3D';
 import Home from './pages/Home';
-import ArchCanvas from './components/BackgroundScene/Canvas3D/ArchCanvas';
 import { useEffect, useState } from 'react';
 import Navbar from './components/primitives/Navbar/Navbar';
 import FractalDistortionPlugin from './components/MainComponents/Programming/plugins/FractalDistortion/FractalDistortion';
