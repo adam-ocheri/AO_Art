@@ -22,24 +22,49 @@ export default function RealtimeComposerPluginDocs() {
                 'basic-example': 'Basic Example Usage'
             }
         },
+        'music-state-collections': {
+            title: 'Music State Collections',
+            description: 'Master the core concepts of music states, sub-states, and state transitions for dynamic audio systems.',
+            subcategories: {
+                'core-concepts': 'Core Concepts And Terminology',
+                'creating-musical-state': 'Creating Musical State',
+                'creating-sub-state': 'Creating Sub State',
+                'managing-sub-collections': 'Managing Sub Collections',
+                'state-transitions': 'State Transitions'
+            }
+        },
+        'orchestrator-class': {
+            title: 'Orchestrator Class',
+            description: 'Learn how to use the Orchestrator Class to hook into the internal events of the Realtime Composer plugin.',
+            subcategories: {
+                'overview-orchestrator-class': 'Orchestrator Class Overview',
+                'creating-orchestrator-class': 'Creating Orchestrator Class',
+                'using-orchestrator-class': 'Using Orchestrator Class',
+            }
+        },
+        'game-audio': {
+            title: 'Game Audio',
+            description: 'Master the core concepts of game audio in Realtime Composer, channel configuration, and real-time effects processing.',
+            subcategories: {
+                'overview-game-audio': 'Overview',
+                'creating-game-audio-channels': 'Creating Game Audio Channels',
+                'creating-game-audio-tracks': 'Creating Game Audio Tracks',
+                'advanced-usage': 'Advanced Game Audio Usage',
+            }
+        },
         'midi-track-editor': {
             title: 'Midi Track Asset Editor',
             description: 'Learn how to use the Midi Track Asset Editor to create and manage MIDI tracks.',
             subcategories: {
                 'creating-midi-tracks': 'Creating Midi Tracks',
                 'loading-midi-tracks': 'Playing Midi Tracks',
+                // 'creating-custom-synth': 'Creating Custom Synth MetaSound Voice Presets', //! added in version 0.7.5
             }
         },
-        // 'music-state-collections': {
-        //     title: 'Music State Collections',
-        //     description: 'Master the core concepts of music states, sub-states, and state transitions for dynamic audio systems.',
-        //     subcategories: {
-        //         'creating-states': 'Creating Music States',
-        //         'sub-state-management': 'Sub-State Management',
-        //         'state-transitions': 'State Transitions'
-        //     }
-        // },
-        // 'audio-channel-mixing': {
+        
+        
+       
+        // 'sound-effects': {
         //     title: 'Audio Channel Mixing',
         //     description: 'Explore advanced audio mixing techniques, channel configuration, and real-time effects processing.',
         //     subcategories: {
@@ -48,15 +73,16 @@ export default function RealtimeComposerPluginDocs() {
         //         'effects-processing': 'Effects Processing'
         //     }
         // },
-        // 'debug-console': {
-        //     title: 'Debug Console',
-        //     description: 'Utilize the debug console for monitoring, testing, and optimizing your musical implementations.',
-        //     subcategories: {
-        //         'console-features': 'Console Features',
-        //         'manual-control': 'Manual Control',
-        //         // 'performance-monitoring': 'Performance Monitoring' // TODO
-        //     }
-        // },
+        'debug-console': {
+            title: 'Runtime Debug Console',
+            description: 'Utilize the debug console for monitoring, testing, and optimizing your musical implementations.',
+            subcategories: {
+                'console-features': 'Debug Console Overview',
+                'panel-1-collections': 'Music Collections Control Panel',
+                'panel-2-channels': 'Audio Channels Control Panel',
+                // 'performance-monitoring': 'Performance Monitoring' // TODO
+            }
+        },
         'api-reference': {
             title: 'API Reference',
             description: 'Explore the comprehensive API reference for the Realtime Composer plugin, providing detailed information on all classes, functions, and properties.',
@@ -113,6 +139,7 @@ export default function RealtimeComposerPluginDocs() {
                             Sample Tracks function as an arpeggiator system. Instead of playing a single long audio file, you define individual samples and control their playback rate, enabling rhythmic and melodic patterns that adapt to your game's musical context.
                         </p>
                         
+                        For more information on the different collection types and how to use them, see the <a href="#midi-collection-structure">Music Collection Structure</a> section.
                         <hr/>
 
                         <h4>Additional Features</h4>
@@ -317,6 +344,533 @@ export default function RealtimeComposerPluginDocs() {
                 </>
             )
         },
+        'music-state-collections': {
+            content: (
+                <>
+                    <section id="core-concepts" className="docs-section">
+                        <h3>Core Concepts And Terminology</h3>
+                        <p>
+                            To understand how to use Musical State Collections and their features, you need to first understand the building blocks of the Realtime Composer system, and the terminology used to describe them.
+                        </p>
+                        
+                        <p>
+                            A <span className='docs-ue-type-name'>MusicalStateCollection</span> is a container that holds 4 audio sub-containers, each used for a different purpose.
+                            <br/>
+                            Each such sub-container is known as a <span className='docs-ue-type-name'>SubCollection</span>.
+                            <br/>
+                            The main sub-container, is the MusicTracks SubCollection, which is often referred to as the "<span className='docs-ue-type-name'>MusicalState</span>".
+                            <br/>
+                            When we want to add a new audio channel to a SubCollection, we add a <span className='docs-ue-type-name'>SubCollectionGroup</span>.
+                            <br/>
+                            SubCollectionGroups that are added to the main MusicTracks SubCollection (i.e the MusicalState) are also referred to as "<span className='docs-ue-type-name'>SubStates</span>".
+                            <br/>
+                            <br/>
+                            A SubCollectionGroup/SubState is essentially an audio channel that can hold multiple AudioTracks.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-music-collection-example.png'} width={'30%'} />
+                        </p>
+                        <hr/>
+                        <div>
+                            <p>
+                                The following are the different types of SubCollections and their purpose:
+                            </p>
+                            <h5>1. Music Tracks SubCollection</h5>
+                            <p>
+                                Music Tracks, i.e the main SubCollection, play in deterministic layers that can be dynamically controlled. You define layers and use <span className='docs-ue-type-name'>MusicEscalate</span> to progressively add layers in ascending order, building musical intensity. Use <span className='docs-ue-type-name'>MusicDeescalate</span> to reduce intensity by removing layers. These tracks loop continuously, forming the foundation of your interactive music system.
+                            </p>
+
+                            <h5>2. Audio Tracks SubCollection</h5>
+                            <p>
+                                Audio Tracks create layered soundscapes that you can control flexibly by layer name rather than strict sequential order. This provides greater flexibility in arranging your audio, allowing you to trigger specific layers based on game conditions. Like Music Tracks, these loop continuously.
+                            </p>
+
+                            <h5>3. Transient Tracks SubCollection</h5>
+                            <p>
+                                Transient Tracks are temporary, one-shot audio events scheduled to occur at a specific musical time. These tracks play once and are not part of the looping system, making them ideal for punctuating gameplay moments with musical stings or transitions that remain perfectly synchronized with the tempo.
+                            </p>
+
+                            <h5>4. Sample Tracks SubCollection</h5>
+                            <p>
+                                Sample Tracks function as an arpeggiator system. Instead of playing a single long audio file, you define individual samples and control their playback rate, enabling rhythmic and melodic patterns that adapt to your game's musical context.
+                            </p>
+                        </div>
+                        <hr/>
+                        <p>
+                            {/* The remaining 3 SubCollections are not mandatory to use of course, but each can offer additional functionality and behavior.
+                            <br/>
+                            Each SubCollection is an audio channel that can hold SubCollectionGroups, which are used for grouping AudioTracks together for specialized functionality and behavior.
+                            <br/> */}
+                            It's important to understand that creating a new MusicalStateCollection automatically creates 5 audio channels - 1 is a root channel, and the remaining 4 are the SubCollections.
+                            <br/>
+                            The main SubCollection is often referred to as the "<span className='docs-ue-type-name'>MusicalState</span>".
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-music-collection-example1.png'} width={'35%'} />
+                            <br/>
+                            When we add a new SubState/SubCollectionGroup, we are essentially creating a new audio channel under the selected SubCollection.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-music-collection-example2.png'} width={'35%'} />
+                        </p>
+                        <p>
+                        The remaining 3 SubCollections are not mandatory to use of course, but each can offer additional functionality and behavior.
+                            <br/>
+                            Each SubCollection is an audio channel that can hold SubCollectionGroups, which are used for grouping AudioTracks together for specialized functionality and behavior.
+                            <br/>
+                            If you do want to utilize a SubCollection, you can do so by adding a SubCollectionGroup to it, which will allow you to add AudioTracks to it.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-music-collection-example3.png'} width={'40%'} />
+                        </p>
+                        <hr/>
+                        <p>
+                            IN RECAP:
+                            <br/>
+                            <ul>
+                                <li>
+                                    A <span className='docs-ue-type-name'>MusicalStateCollection</span> is a container that holds 4 child core audio channels, which are known as <span className='docs-ue-type-name'>SubCollections</span>
+                                    <div>
+                                        The 4 SubCollections are:
+                                        <ul>
+                                            <li>MusicTracks SubCollection (Main)</li>
+                                            <li>AudioTracks SubCollection</li>
+                                            <li>TransientTracks SubCollection</li>
+                                            <li>SampleTracks SubCollection</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li>The main MusicTracks SubCollection is often referred to as the "<span className='docs-ue-type-name'>MusicalState</span>"</li>
+                                <li>
+                                    When we want to add a new audio channel to a SubCollection, we add a <span className='docs-ue-type-name'>SubCollectionGroup</span>. If the SubCollection is the main MusicTracks SubCollection, then the SubCollectionGroup is known as a "<span className='docs-ue-type-name'>SubState</span>".
+                                </li>
+                                <li>
+                                    AudioTracks are played and behave differently based on the SubCollection type they are in.
+                                </li>
+                            </ul>
+                        </p>
+                        
+                        
+                    </section>
+
+                    <section id="creating-musical-state" className="docs-section">
+                        <h3>Creating Musical States</h3>
+                        <p>
+                            To create a new <span className='docs-ue-type-name'>MusicalStateCollection</span>, use <span className='docs-ue-type-name'>AddNewMusicalState()</span> to create a new Musical State Collection.
+                            <br/>
+                            The function takes two parameters:
+                            <ul>
+                                <li>
+                                    <span className='docs-ue-type-name'>NewCollectionName</span>: The name for the new MusicalState collection
+                                </li>
+                                <li>
+                                    <span className='docs-ue-type-name'>TempoSettings</span>: The Tempo settings to create the music state with
+                                    <ul>
+                                        <li>Tempo: The tempo of the music state</li>
+                                        <li>Bars: The number of bars per loop</li>
+                                        <li>Beats: The number of beats per bar</li>
+                                        <li>Triplets Grid: Whether the grid is a triplet grid</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-state.png'} width={'35%'} />
+                        <p>
+                            The function returns a <span className='docs-ue-type-name'>URCAudioChannelBase*</span> object, which is the root audio channel for that new <span className='docs-ue-type-name'>MusicalStateCollection</span>.
+                            <br/>
+                            This can be used for audio mixing and effects processing control.
+                        </p>
+                    </section>
+
+                    <section id="creating-sub-state" className="docs-section">
+                        <h3>Creating Sub States</h3>
+                        <p>
+                            To create a new <span className='docs-ue-type-name'>SubState</span>, you first need to create a <span className='docs-ue-type-name'>MusicalStateCollection</span> using <span className='docs-ue-type-name'>AddNewMusicalState()</span>, as demonstrated in the previous section.
+                            <br/>
+                            Then, use <span className='docs-ue-type-name'>AddNewSubstate()</span>, passing the name of the owning <span className='docs-ue-type-name'>MusicalStateCollection</span> and the name for the new <span className='docs-ue-type-name'>SubState</span> to create a new <span className='docs-ue-type-name'>SubState</span> under the <span className='docs-ue-type-name'>MusicalStateCollection</span>.
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-substate.png'} width={'35%'} />
+                        <p>
+                            To add audio tracks to a Sub State, you can use <span className='docs-ue-type-name'>AddNewTrack()</span> to create a new Audio Track under the Sub State.
+                            <br/>
+                            First, you have to create a new <span className='docs-ue-type-name'>URCTrackRepresentation</span> object using <span className='docs-ue-type-name'>CreateAudioTrackRepresentation()</span>, passing an audio wave file that matches your State's set Tempo.
+                            <br/>
+                            Then, you can pass the <span className='docs-ue-type-name'>URCTrackRepresentation</span> object to <span className='docs-ue-type-name'>AddNewTrack()</span> to create a new Audio Track under the Sub State.
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-track-for-substate.png'} width={'35%'} />
+
+                        <p>
+                            Alternatively, if you have created a MidiTrack asset, you can use <span className='docs-ue-type-name'>CreateMidiMusicTrack()</span> to create a new Midi Track under the Sub State, passing the collection context type as <span className='docs-ue-type-name'>MusicTracksCollection</span>.
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-miditrack-for-substate.png'} width={'35%'} />
+                        <br/>
+
+                        To learn how to play the system per your setup, see the <a href="#playing-the-system">Playing the Music System</a> section.
+                    </section>
+
+                    <section id="managing-sub-collections" className="docs-section">
+                        <h3>Managing Sub Collections</h3>
+                        <p>
+                            When you want specialized behavior for your music tracks - such as non-linear looping layers, one-shot transient events, or arpeggiator patterns, you want to use the different SubCollections to achieve this.
+                        </p>
+                        <p>
+                            To utilize a SubCollection, you need to first create a new SubCollectionGroup channel under the chosen context type.
+                            <br/>
+                            <span className='docs-ue-important'>NOTE: This is the equivalent of creating a new SubState channel under the main MusicTracks SubCollection, i.e the "MusicalState".</span>
+                            <br/>
+                            <hr/>
+                            To create a new SubCollectionGroup channel, you first need to choose the context type of the sub-collection you want to create.
+                            <br/>
+                            Then you can use <span className='docs-ue-type-name'>AddNewSubCollectionGroup()</span> to create a new Sub Collection Group channel under the chosen context type.
+                            <br/>
+                            <span className='docs-ue-important'>NOTE: Ensure to pass the name of the owning MusicalState as the CollectionName parameter.</span>
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-subcollection-group.png'} width={'35%'} />
+                        </p>
+                        <p>
+                            To add audio tracks to a Sub Collection Group, you can use <span className='docs-ue-type-name'>AddNewTrackToSubCollectionGroup()</span> to create a new Audio Track under the Sub Collection Group.
+                            <br/>
+                            <span className='docs-ue-important'>NOTE: Ensure to pass the name of the owning Sub Collection Group as the SubCollectionGroupName parameter.</span>
+                            <br/>
+                            <span className='docs-ue-important'>NOTE: Ensure to create the representation object of the new track to create first, and then pass it to the function as the Track parameter.</span>
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-subcollection-group-audiotrack.png'} width={'35%'} />
+                        </p>
+
+                        <p>
+                            Alternatively, if you have created a MidiTrack asset, you can use <span className='docs-ue-type-name'>CreateMidiMusicTrack()</span> to create a new Midi Track under the Sub State, passing your selected collection context type
+                            <br/>
+                            <span className='docs-ue-important'>NOTE: Ensure to pass the name of the owning Sub Collection Group as the GroupName parameter, as well as the MusicalState name.</span>
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-create-subcollection-group-miditrack.png'} width={'35%'} />
+                        </p>
+
+                        <p>
+                            To learn how to play the system per your setup, see the <a href="#playing-the-system">Playing the Music System</a> section.
+                        </p>
+                       
+                    </section>
+
+                    <section id="state-transitions" className="docs-section">
+                        <h3>Musical State Transitions</h3>
+                        <p>
+                            Musical State Transitions are the process of switching from one Musical State to another.
+                            <br/>
+                            When your collections hierarchy has more than one Musical State in it, you can switch between them using the <span className='docs-ue-type-name'>SwitchMusicalState()</span> function.
+                            <br/>
+                            The function takes the following parameters:
+                            <ul>
+                                <li>
+                                    <span className='docs-ue-type-name'>NewStateName</span>: The name of the new Musical State to switch to
+                                </li>
+                                <li>
+                                    <span className='docs-ue-type-name'>SwitchQuantization</span>: The quantization type for the switch
+                                </li>
+                                <li>
+                                    <span className='docs-ue-type-name'>bAutoEscalate</span>: Whether to automatically escalate the new state (the MusicalState needs to have SubState(s) under it for this to work)
+                                </li>
+                                <li>
+                                    <span className='docs-ue-type-name'>Factor</span>: The degree of escalation to use (used only if passing bAutoEscalate = true)
+                                </li>
+                            </ul>
+                            <span className='docs-ue-important'>NOTE: if the clock is not ticking, this functions ignores all parameters besides the "NewStateName" (used for priming a musical state).</span>
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-switch-musical-state.png'} width={'25%'} />
+                       
+                    </section>
+                </>
+            )
+        },
+        'orchestrator-class': {
+            content: (
+                <>
+                    <section id="overview-orchestrator-class" className="docs-section">
+                        <h3>Orchestrator Class Overview</h3>
+                        <p>
+                            The Orchestrator Class is a class that you can inherit from to subscribe to events of the Realtime Composer system.
+                            <br/>
+                            It is a way to hook into the internal events of the Realtime Composer plugin, most notably the events of the native Quartz clock.
+                            <br/>
+                            <br/>
+                            In runtime, an Orchestrator instance is created as a singleton, and is kept alive throughout the lifetime of the music system (the entire GameInstance lifecycle). This makes the Orchestrator an ideal place to control the overall behavior of the music system.
+                            <br/>
+                            This is crucial, because you want your music handling code to be carried out by an object that persists across level transitions, and you want to be able to access it from anywhere in your code (can easily use the <span className='docs-ue-type-name'>GetOrchestrator()</span> function to get a reference to your Orchestrator instance in runtime).
+                            <br/>
+                            <br/>
+                            The aim of the Orchestrator is to provide a way to hook into the internal events of the Realtime Composer system, and it should be the main class in which you write the core logic for your music system.
+                        </p>
+                        
+                    </section>
+
+                    <section id="creating-orchestrator-class" className="docs-section">
+                        <h3>Creating custom Orchestrator Class</h3>
+                        <p>
+                            To create a custom Orchestrator Class, you need to create a new Blueprint class that inherits from the <span className='docs-ue-type-name'>URCOrchestratorBase</span> class.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-orchestrator-create.png'} width={'40%'} />
+                        </p>
+                        <p>
+                            Once your custom Orchestrator Class is created, you will need to set it as the Default Orchestrator Class in the Realtime Composer plugin Settings, under Project Settings {"->"} Plugins {"->"} Realtime Composer.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-orchestrator-plugin-settings.png'} width={'40%'} />
+                        </p>
+                        
+                    </section>
+
+                    <section id="using-orchestrator-class" className="docs-section">
+                        <h3>Using Orchestrator Class</h3>
+                        <p>
+                            The Orchestrator has native C++ driven events that you can subscribe to, to hook into the internal events of the Realtime Composer system.
+                            <br/>
+                            These events can be subscribed to in your derived Orchestrator class, and will be triggered when the corresponding event occurs.
+                            <br/>
+                            The aim of the Orchestrator is to provide a way to hook into the internal events of the Realtime Composer system, and it should be the main class in which you write the core logic for your music system.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-orchestrator-events.png'} width={'40%'} />
+                        </p>
+                        
+                        <p>
+                            The following are the different events that you can subscribe to:
+                        </p>
+                        <ul>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerWorldChanged</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerWorldChanged",
+                                        description: "Triggered when the current world changes",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [
+                                            { name: "NewCurrentWorld", type: "UWorld*", description: "Pointer to the newly loaded world" }
+                                        ],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerClockStarted</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerClockStarted",
+                                        description: "Triggered when the Quartz clock starts ticking.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerClockStopped</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerClockStopped",
+                                        description: "Triggered when the Quartz clock stops ticking.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerClockPaused</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerClockPaused",
+                                        description: "Triggered when the Quartz clock pauses.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerClockResumed</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerClockResumed",
+                                        description: "Triggered when the Quartz clock resumes after being paused.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerClockTick</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerClockTick",
+                                        description: "Triggered on every tick of the Quartz clock.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [
+                                            { name: "NumIteration", type: "int32", description: "The number of loops passed since the clock started ticking" },
+                                            { name: "Bar", type: "int32", description: "The current Bar number" },
+                                            { name: "Beat", type: "int32", description: "The current Beat number" },
+                                            { name: "MicroIteration", type: "int32", description: "The current MicroIteration number (Bar relative).\n In standard grid, this is a 1/32 note - if a triplet grid, this is a 1/16t note" },
+                                            { name: "TimeToNextLoop", type: "float", description: "Time in seconds to the next loop start time" },
+                                            { name: "TimeToNextBar", type: "float", description: "Time in seconds to the next bar start time" },
+                                            { name: "TimeToNextBeat", type: "float", description: "Time in seconds to the next beat start time" }
+                                        ],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerTracksAddedToQueue</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerTracksAddedToQueue",
+                                        description: "Triggered when tracks are added to the queue.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerMusicalStateSwitchRequested</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerMusicalStateSwitchRequested",
+                                        description: "Triggered when a musical state switch is requested, before the switch happens.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [
+                                            { name: "NextMusicalState", type: "UMusicStateCollections*", description: "The next musical state requested to play" },
+                                        ],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                            <li className='mt2 mb2'>
+                                <span className='docs-ue-type-name font-1 s2'>OnRealtimeComposerMusicalStateSwitched</span>
+                                <div>
+                                    <BPFunction functionData={{
+                                        name: "OnRealtimeComposerMusicalStateSwitched",
+                                        description: "Triggered when a musical state switch occurs.",
+                                        static: false,
+                                        bpNativeEvent: true,
+                                        parameters: [
+                                            { name: "NewMusicalState", type: "UMusicStateCollections*", description: "The newly activated musical state that was switched to" },
+                                        ],
+                                        return: {
+                                            type: "void",
+                                            description: ""
+                                        }
+                                    }} />
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+
+                    {/* TODO: Add best practices section */}
+                    {/* <section id="best-practices" className="docs-section">
+                        Create an orchestrator class, and create additional orchestrator classes derived from it.
+                        <br/>
+                        You can switch between orchestrator classes at runtime, so it would be more flexible for you to have any dynamic Orchestrator class you may use derive from a base class that you can control.
+                    </section> */}
+                </>
+            )
+        },
+        'game-audio': {
+            content: (
+                <>
+                    <section id="overview" className="docs-section">
+                        <h3>Overview</h3>
+                        <p>
+                            Dynamic music systems for games are a powerful way to create immersive and engaging audio experiences.
+                            <br/>
+                            However, music is "just" half of the audio experience. The game sound, both in 2D and 3D, is just as important, and can greatly enhance the player's immersion and engagement.
+                            <br/>
+                            In the end, audio is one stream being perceived by the player, and it should be treated as such - the final audio mix should be the result of the music and the game sound combined, for example, with potential side chain compression enforced where needed and sound effects applied where desired.
+                            <br/>
+                            The audio needs to feel coherent and cohesive, and the game sound should be integrated into the music seamlessly, working together to create a unified and immersive sonic experience.
+                            <br/>
+                            <br/>
+                            For exactly this reason, Realtime Composer offers support beyond the sole music composition and orchestration aspects - it provides a full audio mixing system for your game.
+                            <br/>
+                            <br/>
+                            By creating audio channel groups for your game sound (for example, "UI", "Dialogue", "PlayerSounds", etc...), you can then add game audio tracks to them, and control the volume and effects processing for each individual group.
+                            <br/>
+                            This makes the Realtime Composer system a complete audio mixing system for your game, on top of the music composition and orchestration - a full featured dyanmic musical system, with simple API for flexible control.
+                            <br/>
+                            <br/>
+                            <hr/>
+                            {/* <br/> */}
+
+                            <h4 className='font-9 s1'>Basic Terminology</h4>
+                            <p>
+                                <ul>
+                                    <li><span className='docs-ue-type-name'>MixGroup</span>: A top-level audio channel group for your game sound</li>
+                                    <li><span className='docs-ue-type-name'>SubMixGroup</span>: A sub-level audio channel group under a MixGroup. Can be nested recursively.</li>
+                                    <li><span className='docs-ue-type-name'>GameAudioTrack</span>: A game audio track. Can be either 2D or 3D.</li>
+                                </ul>
+                            </p>
+                        </p>
+                        
+                    </section>
+                    <section id="creating-game-audio-channels" className="docs-section">
+                        <h3>Creating Game Audio Channels</h3>
+                        <p>
+                            See Game Audio API docs
+                        </p>
+                        
+                    </section>
+
+                    <section id="creating-game-audio-tracks" className="docs-section">
+                        <h3>Creating Game Audio Tracks</h3>
+                        <p>
+                            See Game Audio API docs
+                        </p>
+                    </section>
+
+                    <section id="advanced-usage" className="docs-section">
+                        <h3>Advanced Game Audio Usage</h3>
+                        <p>
+                            If you ever used the Debug Console, you might have noticed that that the Music and Game audio hierarchies are seperated into 2 different channel hierarchies.
+                            <br/>
+                            Under the <span className='docs-ue-type-name'>RC.Master.MusicMain</span> Audio Channel you can see the Musical State's hierarchy, and under the <span className='docs-ue-type-name'>RC.Master.GameMain</span> Audio Channel you can see the Game Audio MixGroups.
+                            <br/>
+                            This is because the Music and Game audio hierarchies are completely independent of each other, and can be controlled separately. Each audio hierarchy exists in it's own Domain.
+                            <br/>
+                            <br/>
+                            You might have also noticed that under the <span className='docs-ue-type-name'>RC.Master.GameMain</span> Audio Channel there are already 2 default persistent mix groups: <span className='docs-ue-type-name'>WorldSounds</span> and <span className='docs-ue-type-name'>UserWorldSounds</span>.
+                            <br/>
+                            
+                        </p>
+                    </section>
+                </>
+            )
+        },
         'midi-track-editor': {
             content: (
                 <>
@@ -361,114 +915,148 @@ export default function RealtimeComposerPluginDocs() {
                         </p>
                         
                     </section>
+                    
+                    {/* <section id='creating-custom-synth' className="docs-section">
+                        <h3>Creating Custom Synth MetaSound Voice Presets</h3>
+                        <p>
+                            ...TODO...
+                        </p>
+                        
+                    </section> */}
                 </>
             )
         },
-        // 'music-state-collections': {
-        //     content: (
-        //         <>
-        //             <section id="creating-states" className="docs-section">
-        //                 <h3>Creating Music States</h3>
-        //                 <p>
-        //                     Music States represent different emotional or gameplay contexts in your game. Each state can contain multiple audio tracks and sub-states that can be dynamically mixed based on gameplay events.
-        //                 </p>
-        //                 <p>
-        //                     To create a new music state, use the Create Music State function in your Blueprint. This will return a reference to the newly created state that you can use throughout your project.
-        //                 </p>
-        //             </section>
+        
+        
+        
+        'debug-console': {
+            content: (
+                <>
+                    <section id="console-features" className="docs-section">
+                        <h3>Runtime Debug Console Overview</h3>
+                        <p>
+                            The Runtime Debug Console is a powerful tool for monitoring and controlling the Realtime Composer system in real-time.
+                        </p>
+                        <p>
+                            It is a standalone window that can be enabled and opened by pressing the set "Debug Console" button in the Realtime Composer plugin settings. It is located under Project Settings {"->"} Plugins {"->"} Realtime Composer.
+                        </p>
+                        <p>
+                            By default, the Debug Console is enabled, but this can be modified in the plugin settings.
+                            <br/>
+                            Since this adds additional runtime overhead, you can set it to disabled when not needed.
+                        </p>
+                    </section>
 
-        //             <section id="sub-state-management" className="docs-section">
-        //                 <h3>Sub-State Management</h3>
-        //                 <p>
-        //                     Sub-states allow for fine-grained control over the musical composition. You can create multiple sub-states within a single music state and transition between them seamlessly.
-        //                 </p>
-        //                 <p>
-        //                     Each sub-state can have its own audio tracks, volume levels, and transition parameters. This allows for complex musical arrangements that respond to gameplay events.
-        //                 </p>
-        //             </section>
+                    <section id="panel-1-collections" className="docs-section">
+                        <h3><span className='font-9 s1'>Panel 1:</span> Music Collections Control Panel</h3>
+                        <p>
+                            The Music Collections Control Panel allows you to create, edit, and play Music State Collections.
+                        </p>
+                        <p>
+                            You can create a new Music State Collection by clicking the "Add" button in the MusicalState section.
+                        </p>
+                        <p>
+                            After that, you can select the new Music State Collection and create a SubState by clicking the "Add" button in the SubState section.
+                        </p>
+                        <p>
+                            Then you can select the new MusicalState and the SubState and create a new Audio Track by clicking the "Add" button in the AudioTrack section.
+                        </p>
+                        
+                        <p>
+                            Finally, you can select a MusicalState to set as the currently active State, play the State, Escalate/De-escalate the State, and switch to a new State.
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel1.png'} width={'50%'} />
+                    </section>
 
-        //             <section id="state-transitions" className="docs-section">
-        //                 <h3>State Transitions</h3>
-        //                 <p>
-        //                     State transitions allow you to smoothly move between different musical states based on gameplay events. The system provides various transition types including crossfade, fade in/out, and immediate switching.
-        //                 </p>
-        //                 <p>
-        //                     Configure transition parameters such as duration, curve type, and trigger conditions to create natural and responsive musical changes.
-        //                 </p>
-        //             </section>
-        //         </>
-        //     )
-        // },
-        // 'audio-channel-mixing': {
-        //     content: (
-        //         <>
-        //             <section id="channel-configuration" className="docs-section">
-        //                 <h3>Channel Configuration</h3>
-        //                 <p>
-        //                     Configure individual audio channels with specific parameters such as volume, panning, and effects processing.
-        //                 </p>
-        //                 <p>
-        //                     Each channel can be assigned to different audio tracks and can have its own processing chain including filters, reverb, and other effects.
-        //                 </p>
-        //             </section>
+                    <section id="panel-2-channels" className="docs-section">
+                        <h3><span className='font-9 s1'>Panel 2:</span> Audio Channels Control Panel</h3>
+                        <p>
+                            The Audio Channels panel allows you to see all the audio channels hierarchy, and control the volume and effects processing for each individual channel.
+                        </p>
+                        <p>
+                            Additionally, you can select a channel for editing, and depending on the channel's context type, you can add additional child channels to it (SubCollectionGroups), add AudioTracks to them, play/stop/remove them, and set the volume and effects processing for each individual newly created channel.
+                        </p>
+                        <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2.png'} width={'50%'} />
+                        
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 1. DSP {"->"} 1.Effects</span>
+                            <br/>
+                            You can select a channel and use the effects pane to select from a plethora of audio effects to add to the channel.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-effects.png'} width={'50%'} />
+                        </p>
 
-        //             <section id="dynamic-mixing" className="docs-section">
-        //                 <h3>Dynamic Mixing</h3>
-        //                 <p>
-        //                     The system automatically adjusts the mix based on the current music state and sub-state, ensuring smooth transitions and appropriate audio levels.
-        //                 </p>
-        //                 <p>
-        //                     Dynamic mixing parameters can be controlled through gameplay events, allowing for real-time adjustment of the musical mix based on player actions or game state changes.
-        //                 </p>
-        //             </section>
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 1. DSP {"->"} 2.Sends</span>
+                            <br/>
+                            You can select a channel and use the sends pane to create a new send destination target, if you have created any send destinaion under the selected domain (Music or Game).
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-sends.png'} width={'50%'} />
+                        </p>
 
-        //             <section id="effects-processing" className="docs-section">
-        //                 <h3>Effects Processing</h3>
-        //                 <p>
-        //                     Apply various audio effects to individual channels or the entire mix. Supported effects include reverb, delay, filters, compression, and more.
-        //                 </p>
-        //                 <p>
-        //                     Effects can be automated based on gameplay events, creating dynamic audio processing that enhances the player experience.
-        //                 </p>
-        //             </section>
-        //         </>
-        //     )
-        // },
-        // 'debug-console': {
-        //     content: (
-        //         <>
-        //             <section id="console-features" className="docs-section">
-        //                 <h3>Console Features</h3>
-        //                 <p>
-        //                     Monitor active music states, sub-states, and audio channels in real-time. View performance metrics and system status information.
-        //                 </p>
-        //                 <p>
-        //                     The console displays current playback status, active transitions, and system performance data to help you debug and optimize your musical implementation.
-        //                 </p>
-        //             </section>
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 1. DSP {"->"} 3.Sources</span>
+                            <br/>
+                            If the selected audio channel has any audio tracks under it, you can see and select the tracks from the Sources pane.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-sources.png'} width={'50%'} />
+                        </p>
 
-        //             <section id="manual-control" className="docs-section">
-        //                 <h3>Manual Control</h3>
-        //                 <p>
-        //                     Use the debug console to manually trigger state changes, adjust audio parameters, and test different musical configurations during development.
-        //                 </p>
-        //                 <p>
-        //                     Manual controls allow you to test your musical system without needing to trigger specific gameplay events, making development and debugging much more efficient.
-        //                 </p>
-        //             </section>
+                        <hr/>
+                        <p>
+                            The next sub-editor in the AudioChannelEditor, is the Settings panel.
+                            <br/>
+                            This is a context-sensitive panel that depending on the audio channel selected, would display different functionalities.
+                        </p>
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 2. Settings {"->"} 1.SubCollectionGroups</span>
+                            <br/>
+                            When the selected audio channel is a SubCollection, this pane will display the SubCollection Editor, allowing you to manage the SubCollection Groups under it.
+                            <br/>
+                            Here you can create SubCollectionGroups under the selected SubCollection, add AudioTracks to groups, and play/stop the groups, with flexible behavior options.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-subcollectiongroups.png'} width={'50%'} />
+                        </p>
 
-        //             <section id="performance-monitoring" className="docs-section">
-        //                 <h3>Performance Monitoring</h3>
-        //                 <p>
-        //                     Monitor system performance including CPU usage, memory allocation, and audio processing latency.
-        //                 </p>
-        //                 <p>
-        //                     Performance metrics help you identify potential bottlenecks and optimize your musical system for better performance across different platforms and hardware configurations.
-        //                 </p>
-        //             </section>
-        //         </>
-        //     )
-        // },
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 2. Settings {"->"} 2.SendDestinations</span>
+                            <br/>
+                            When the selected audio channel is a a SendRoot (Music or Game), this pane will display the Send Destination Editor, allowing you add new Send Destinations.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-sendschannel.png'} width={'50%'} />
+                            <br/>
+                            These send destinations can then be selected as a target for any channel under that audio domain, and start sending audio to them from any source channel.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-sends.png'} width={'50%'} />
+                        </p>
+
+                        <p>
+                            <span className='docs-ue-type-name'>Pane | 2. Settings {"->"} 3.Game Audio</span>
+                            <br/>
+                            When the selected audio channel is a Game Audio MixGroup, this pane will display the Game Audio Editor, allowing you to manage the Game Audio MixGroups under it.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-gameaudio1.png'} width={'50%'} />
+                            <br/>
+                            Here you can create new Game Audio MixGroups under the selected MixGroup, add AudioTracks to them, and play/stop the groups, with flexible behavior options.
+                            <br/>
+                            Note that Realtime Composer supports both 2D and 3D game audio tracks, and you can select the type of track you want to create by clicking the "Create as 3D Track" option.
+                            <br/>
+                            <img alt='realtime composer plugin preview' src={'../../rc-docs/rcdoc-debugconsole-panel2-gameaudio2.png'} width={'50%'} />
+                        </p>
+                    </section>
+
+                    {/* <section id="performance-monitoring" className="docs-section">
+                        <h3>Performance Monitoring</h3>
+                        <p>
+                            Monitor system performance including CPU usage, memory allocation, and audio processing latency.
+                        </p>
+                        <p>
+                            Performance metrics help you identify potential bottlenecks and optimize your musical system for better performance across different platforms and hardware configurations.
+                        </p>
+                    </section> */}
+                </>
+            )
+        },
         'api-reference': {
             content: (
                 <>
@@ -1917,8 +2505,8 @@ export default function RealtimeComposerPluginDocs() {
             if (!mainContentRef.current) return
 
             const sections = mainContentRef.current.querySelectorAll('section[id]')
-            const scrollTop = mainContentRef.current.scrollTop
-            const viewportHeight = mainContentRef.current.clientHeight
+            // const scrollTop = mainContentRef.current.scrollTop
+            const viewportHeight = mainContentRef.current.clientHeight;
 
             let currentSection = ''
             let minDistance = Infinity

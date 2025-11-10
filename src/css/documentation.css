@@ -220,6 +220,14 @@
     border-radius: 0.2rem;
 }
 
+.docs-ue-important {
+    font-weight: bold;
+    background-color: rgba(237, 150, 9, 0.26);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    color: rgb(255, 255, 255);
+}
+
 /* Blueprint Function Node Styles */
 .bp-function-node {
     background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);

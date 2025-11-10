@@ -42,6 +42,8 @@ interface FunctionData {
     description: string;
     parameters: FunctionParameters[];
     return: FunctionReturn;
+    static?: boolean;
+    bpNativeEvent?: boolean;
 }
 
 interface BPFunctionProps {
@@ -91,6 +93,9 @@ const exampleFunction3 : FunctionData = {
 
 // BP Function component
 const BPFunction: React.FC<BPFunctionProps> = ({ functionData, className = "" }) => {
+    if (!Object.keys(functionData).includes('static')) {
+        functionData.static = true;
+    }
     const getTypeColor = (type: string) => {
         // Handle pointer types
         if (type.includes('*')) {
@@ -161,55 +166,88 @@ const BPFunction: React.FC<BPFunctionProps> = ({ functionData, className = "" })
                     <span className="bp-function-icon">f</span>
                     <span className="bp-function-name">{functionData.name}</span>
                 </div>
-                <div className="bp-node-category">Static</div>
+                {functionData.static && <div className="bp-node-category">Static</div>}
             </div>
             
             {/* Node Body */}
             <div className="bp-node-body">
                 <div className="bp-pins-container">
-                    {/* Input Pins */}
-                    <div className="bp-input-pins">
+                   
+                    {functionData?.bpNativeEvent ? 
+                    <div className="bp-output-pins">
                         {functionData.parameters.map((param, index) => (
-                            <div key={index} className="bp-pin bp-input-pin" data-type={param.type}>
-                                <div className="bp-pin-connector bp-input-connector"></div>
-                                <div className="bp-pin-content">
-                                    <div className="bp-pin-name">{param.name}</div>
-                                    <div 
-                                        className="bp-pin-type"
-                                        style={{ color: getTypeColor(param.type) }}
-                                    >
-                                        {formatTypeName(param.type)}
+                                <div key={index} className="bp-pin bp-output-pin" data-type={param.type}>
+                                    
+                                    <div className="bp-pin-content">
+                                        <div className="bp-pin-name">{param.name}</div>
+                                        <div 
+                                            className="bp-pin-type"
+                                            style={{ color: getTypeColor(param.type) }}
+                                        >
+                                            {formatTypeName(param.type)}
+                                        </div>
+                                    </div>
+                                    <div className="bp-pin-connector bp-output-connector"></div>
+                                </div>
+                            ))}
+                    </div> 
+                    : 
+                    <>
+                        {/* Input Pins */}
+                        <div className="bp-input-pins">
+                            {functionData.parameters.map((param, index) => (
+                                <div key={index} className="bp-pin bp-input-pin" data-type={param.type}>
+                                    <div className="bp-pin-connector bp-input-connector"></div>
+                                    <div className="bp-pin-content">
+                                        <div className="bp-pin-name">{param.name}</div>
+                                        <div 
+                                            className="bp-pin-type"
+                                            style={{ color: getTypeColor(param.type) }}
+                                        >
+                                            {formatTypeName(param.type)}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    
-                    {/* Output Pin */}
-                    {functionData.return.type !== "void" && (
-                        <div className="bp-output-pins">
-                            <div className="bp-pin bp-output-pin" data-type={functionData.return.type}>
-                                <div className="bp-pin-content">
-                                    <div className="bp-pin-name">Return Value</div>
-                                    <div 
-                                        className="bp-pin-type"
-                                        style={{ color: getTypeColor(functionData.return.type) }}
-                                    >
-                                        {formatTypeName(functionData.return.type)}
-                                    </div>
-                                </div>
-                                <div className="bp-pin-connector bp-output-connector"></div>
-                            </div>
+                            ))}
                         </div>
-                    )}
+                        
+                        {/* Output Pin */}
+                        {functionData.return.type !== "void" && (
+                            <div className="bp-output-pins">
+                                <div className="bp-pin bp-output-pin" data-type={functionData.return.type}>
+                                    <div className="bp-pin-content">
+                                        <div className="bp-pin-name">Return Value</div>
+                                        <div 
+                                            className="bp-pin-type"
+                                            style={{ color: getTypeColor(functionData.return.type) }}
+                                        >
+                                            {formatTypeName(functionData.return.type)}
+                                        </div>
+                                    </div>
+                                    <div className="bp-pin-connector bp-output-connector"></div>
+                                </div>
+                            </div>
+                        )}                    
+                    </>
+                    }
+                    
                 </div>
                 
             </div>
         </div>
             {functionData.parameters.length > 0 && (<
             div>
+                {functionData?.bpNativeEvent ? 
+                    <div className="font-1 s2 m1">
+                        <span style={{ color: 'rgb(167, 160, 172)' }}>Outputs:</span> 
+                    </div> 
+                    : <></>
+                }
+
                 {functionData.parameters.map((param, index) => (
-                    <div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}>
+                    <div key={index} style={{ display: 'flex', flexDirection: 'row', gap: '0.5rem' }}
+                        className="m2 font-5"
+                    >
                         <span style={{ color: 'rgb(94, 6, 246)', fontSize: '0.7rem' }}>{param.type}</span>
                         <span style={{ color: 'grey', fontSize: '0.7rem' }}> {param.name}</span>
                         {/* {index < functionData.parameters.length - 1 && <span style={{ color: 'white' }}>, </span>} */}
