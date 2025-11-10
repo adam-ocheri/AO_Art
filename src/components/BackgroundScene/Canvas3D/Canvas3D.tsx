@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import React, { useEffect, useRef, useState } from 'react'
 import { Environment } from '@react-three/drei'
 
-import { Canvas, useFrame, ThreeElements, useThree, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame,  useThree, useLoader } from '@react-three/fiber'//
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import DMesh from '../Objects/DracoMesh/DMesh'
 
@@ -16,24 +16,24 @@ import DMesh from '../Objects/DracoMesh/DMesh'
 // });
 // let instancesLoaded = 0;
 
-function Box(props: ThreeElements['mesh']) {
-  const mesh = useRef<THREE.Mesh>(null!)
-  const [hovered, setHover] = useState(false)
-  const [active, setActive] = useState(false)
-  useFrame((state, delta) => (mesh.current.rotation.x += delta))
-  return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={active ? 1.5 : 1}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
-    </mesh>
-  )
-}
+// function Box(props: ThreeElements['mesh']) {
+//   const mesh = useRef<THREE.Mesh>(null!)
+//   const [hovered, setHover] = useState(false)
+//   const [active, setActive] = useState(false)
+//   useFrame((state, delta) => (mesh.current.rotation.x += delta))
+//   return (
+//     <mesh
+//       {...props}
+//       ref={mesh}
+//       scale={active ? 1.5 : 1}
+//       onClick={(event) => setActive(!active)}
+//       onPointerOver={(event) => setHover(true)}
+//       onPointerOut={(event) => setHover(false)}>
+//       <boxGeometry args={[1, 1, 1]} />
+//       <meshStandardMaterial color={hovered ? 'hotpink' : 'orange'} />
+//     </mesh>
+//   )
+// }
 
 function AutoCamera({speed, targetSubScene} : {speed : number, targetSubScene: string}){
   speed /= 100;

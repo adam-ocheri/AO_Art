@@ -1,7 +1,8 @@
-import * as THREE from 'three'
-import React, { Suspense, useEffect, useRef, useState } from 'react'
-import { Stats, OrbitControls, Environment, useGLTF, useBounds, Bounds, Gltf, Box } from '@react-three/drei'
-import { Canvas, useFrame, ThreeElements, useThree, useLoader, events, createEvents, ObjectMap } from '@react-three/fiber'
+// import * as THREE from 'three'
+import React, { Suspense, useEffect,  useState } from 'react'
+// import { Stats, OrbitControls, Environment, useGLTF, useBounds, Bounds, Gltf, Box } from '@react-three/drei'
+// import { Canvas, useFrame, ThreeElements, useThree, useLoader, events, createEvents, ObjectMap } from '@react-three/fiber'
+import { useFrame,  useLoader, ObjectMap } from '@react-three/fiber'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 

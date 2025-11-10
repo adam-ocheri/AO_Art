@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 
 import { Canvas } from '@react-three/fiber'
@@ -44,9 +44,10 @@ export default function ArchCanvas({hidden, building = ''} : {hidden: boolean, b
 
   function onBuildingLoaded () {
     setBuildingReady(true);
+    console.log(buildingData);
   }
 
-  const {meshRef, position, rotation, scale} = buildingData;
+  // const {meshRef, position, rotation, scale} = buildingData;
   
   // useEffect(()=> {
   //   switch  (building) {

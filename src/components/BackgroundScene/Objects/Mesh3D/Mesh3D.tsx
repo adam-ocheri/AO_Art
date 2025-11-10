@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import { useEffect, useState } from 'react'
 
-import { useFrame, ThreeElements, useThree, useLoader, events, createEvents } from '@react-three/fiber'
+// import { useFrame, ThreeElements, useThree, useLoader, events, createEvents } from '@react-three/fiber'
+import { useFrame,  useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 export default function  Mesh3D  ({ url, position = [0, 0, 0], rotation = [0,0,0], scale = [1, 1, 1], animated } : any) {
@@ -24,6 +25,10 @@ export default function  Mesh3D  ({ url, position = [0, 0, 0], rotation = [0,0,0
       if(gltf){       
         setModelReady(true);
         console.log(gltf)
+      }
+      if (loaded)
+      {
+        
       }
     }, [gltf])
   

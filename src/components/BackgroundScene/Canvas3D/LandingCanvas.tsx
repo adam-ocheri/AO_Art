@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-import React, { useEffect, useRef, useState } from 'react'
-import { Stats, OrbitControls, Environment, useGLTF, useBounds, Bounds } from '@react-three/drei'
+import React, { useEffect,  useState } from 'react'
+import { Environment,} from '@react-three/drei'
 
-import { Canvas, useFrame, ThreeElements, useThree, useLoader, events, createEvents } from '@react-three/fiber'
+import { Canvas, useFrame, useThree, useLoader} from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 // document.addEventListener('requestAnimationFrame', (e) => {
@@ -107,13 +107,13 @@ const Model3D = ({ url, position = [0, 0, 0], rotation = [0,0,0], scale = [1, 1,
   const gltf : any = useLoader(GLTFLoader, url);
   const [modelReady, setModelReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  let isLoaded = false;
+//   let isLoaded = false;
   const [isMounted, setIsMounted] = useState(false);
 
   //animInit
   
-  const animInit = new AnimationPlaybackEvent('LoadAnim1');
-  const animationEvent = new AnimationEvent('LoadAnim1');
+//   const animInit = new AnimationPlaybackEvent('LoadAnim1');
+//   const animationEvent = new AnimationEvent('LoadAnim1');
   const mixer = new THREE.AnimationMixer(gltf.scene);
   const clip : THREE.AnimationAction | any = animated ? mixer.clipAction(gltf.animations[0]) : null;
   if(animated){
@@ -141,6 +141,7 @@ const Model3D = ({ url, position = [0, 0, 0], rotation = [0,0,0], scale = [1, 1,
           }
         }
       }
+      setLoaded(true);
       setModelReady(true);
       // ++instancesLoaded;
       // if(instancesLoaded === 3){
@@ -167,9 +168,9 @@ const Model3D = ({ url, position = [0, 0, 0], rotation = [0,0,0], scale = [1, 1,
     if(animated) mixer.update(delta);
   });
 
-  const fired = (e : any) => {
-    console.log(e);
-  }
+//   const fired = (e : any) => {
+//     console.log(e);
+//   }
   //JSX
   return (
     <mesh position={position} rotation={rotation} scale={scale} castShadow={true} receiveShadow={true}>
