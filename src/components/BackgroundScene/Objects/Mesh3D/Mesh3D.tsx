@@ -28,9 +28,9 @@ export default function  Mesh3D  ({ url, position = [0, 0, 0], rotation = [0,0,0
       }
       if (loaded)
       {
-        
+
       }
-    }, [gltf])
+    }, [loaded, gltf])
   
     useEffect(()=> {
       setIsMounted(true);

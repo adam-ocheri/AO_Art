@@ -21,7 +21,7 @@ function Model ({ url, onLoad, position = [0, 0, 0], rotation = [0,0,0], scale =
       if(gltf && !isLoaded) {
         setIsLoaded(true);
       }
-    }, [gltf])
+    }, [isLoaded, gltf])
 
     useEffect(()=> {
       if (isLoaded && onLoad){
