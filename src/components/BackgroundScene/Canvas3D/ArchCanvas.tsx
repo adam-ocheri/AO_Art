@@ -1,19 +1,10 @@
 import * as THREE from 'three'
-import React, { ExoticComponent, MutableRefObject, RefAttributes, useEffect, useRef, useState } from 'react'
-import { Stats, OrbitControls, Environment, useGLTF, useBounds, Bounds, OrbitControlsProps } from '@react-three/drei'
+import React, { useState } from 'react'
+import { OrbitControls, Environment } from '@react-three/drei'
 
-import { Canvas, useFrame, ThreeElements, useThree, useLoader, events, createEvents, Object3DNode, Vector3 } from '@react-three/fiber'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { Canvas } from '@react-three/fiber'
 import DMesh from '../Objects/DracoMesh/DMesh'
 import Mesh3D from '../Objects/Mesh3D/Mesh3D'
-
-function SceneRenderer()  {
-  const { gl } = useThree();
-  useEffect(() => {
-    console.log('SceneRenderer',gl);
-  });
-  return gl;
-};
 
 export default function ArchCanvas({hidden, building = ''} : {hidden: boolean, building: string}) {
 
